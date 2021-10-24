@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import HomePage from "./pages/HomePage";
 import CoinPage from "./pages/CoinPage";
 import Header from "./components/Header";
+import Alert from "./components/Alert";
 import "./App.css";
 
 const useStyles = makeStyles(() => ({
@@ -15,7 +16,6 @@ const useStyles = makeStyles(() => ({
 
 function App() {
     const classes = useStyles();
-
     return (
         <Router>
             <div className={classes.App}>
@@ -23,6 +23,7 @@ function App() {
                 <Route path="/" component={HomePage} exact />
                 <Route path="/coins/:id" component={CoinPage} exact />
             </div>
+            <Alert />
         </Router>
     );
 }

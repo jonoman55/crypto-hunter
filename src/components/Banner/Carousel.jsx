@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core';
 import AliceCarousel from 'react-alice-carousel';
 import { TrendingCoins } from '../../config/api'
 import { CryptoState } from '../../CryptoContext';
-import { numberWithCommas } from '../CoinsTable';
+import { numberWithCommas } from '../../helpers/text';
 import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
@@ -30,7 +30,6 @@ const Carousel = () => {
 
     const fetchTrendingCoins = async () => {
         const { data } = await axios.get(TrendingCoins(currency));
-        console.log(data);
         setTrending(data);
     };
 
