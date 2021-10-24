@@ -1,11 +1,11 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import AliceCarousel from 'react-alice-carousel';
 import { TrendingCoins } from '../../config/api'
-import { CryptoState } from '../../CryptoContext';
 import { numberWithCommas } from '../../helpers/text';
-import axios from 'axios';
+import { useCryptoState } from '../../CryptoContext';
 
 const useStyles = makeStyles(() => ({
     carousel: {
@@ -23,10 +23,10 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Carousel = () => {
+export default function Carousel() {
     const classes = useStyles();
     const [trending, setTrending] = useState([]);
-    const { currency, symbol } = CryptoState();
+    const { currency, symbol } = useCryptoState();
 
     const fetchTrendingCoins = async () => {
         const { data } = await axios.get(TrendingCoins(currency));
@@ -53,7 +53,7 @@ const Carousel = () => {
                     &nbsp;
                     <span
                         style={{
-                            color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                            color: profit > 0 ? 'rgb(14, 203, 129)' : 'red',
                             fontWeight: 500,
                         }}
                     >
@@ -91,6 +91,4 @@ const Carousel = () => {
             />
         </div>
     );
-}
-
-export default Carousel;
+};

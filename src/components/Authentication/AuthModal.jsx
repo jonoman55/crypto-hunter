@@ -5,7 +5,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase';
 import Login from './Login';
 import SignUp from './SignUp';
-import { CryptoState } from "../../CryptoContext";
+import { useCryptoState } from "../../CryptoContext";
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -35,12 +35,9 @@ export default function AuthModal() {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
 
-    const { setAlert } = CryptoState();
+    const { setAlert } = useCryptoState();
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-  
+    const handleChange = (event, newValue) => setValue(newValue);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -122,4 +119,4 @@ export default function AuthModal() {
             </Modal>
         </div>
     );
-}
+};

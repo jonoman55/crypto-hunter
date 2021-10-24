@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { makeStyles, Drawer, Avatar, Button } from '@material-ui/core';
 import { AiFillDelete } from 'react-icons/ai';
-import { CryptoState } from '../../CryptoContext';
 import { signOut } from '@firebase/auth';
-import { auth, db } from '../../firebase';
 import { doc, setDoc } from '@firebase/firestore';
+import { auth, db } from '../../firebase';
 import { numberWithCommas } from '../../helpers/text';
+import { useCryptoState } from '../../CryptoContext';
 
 const useStyles = makeStyles({
     container: {
@@ -67,7 +67,7 @@ export default function UserSidebar() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
 
-    const { user, setAlert, watchlist, coins, symbol } = CryptoState();
+    const { user, setAlert, watchlist, coins, symbol } = useCryptoState();
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -153,6 +153,7 @@ export default function UserSidebar() {
                             {coins.map((coin, idx) => {
                                 if (watchlist.includes(coin.id)) {
                                     return (
+                                        // TODO : Convert div to a Link Button and use history.push(`/coins/${coin.id}`) to go to it's CoinPage
                                         <div key={idx} className={classes.coin}>
                                             <span>{coin.name}</span>
                                             <span style={{ display: 'flex', gap: 8 }}>
@@ -181,4 +182,4 @@ export default function UserSidebar() {
             </Drawer>
         </>
     );
-}
+};

@@ -1,20 +1,69 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { LinearProgress, makeStyles, Typography, Button } from "@material-ui/core";
-import axios from "axios";
-import ReactHtmlParser from "react-html-parser";
-import CoinInfo from "../components/CoinInfo";
-import { SingleCoin } from "../config/api";
-import { numberWithCommas } from "../helpers/text";
-import { doc, setDoc } from "@firebase/firestore";
-import { db } from "../firebase";
-import { CryptoState } from "../CryptoContext";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { LinearProgress, makeStyles, Typography, Button } from '@material-ui/core';
+import ReactHtmlParser from 'react-html-parser';
+import CoinInfo from '../components/CoinInfo';
+import { SingleCoin } from '../config/api';
+import { doc, setDoc } from '@firebase/firestore';
+import { db } from '../firebase';
+import { numberWithCommas } from '../helpers/text';
+import { useCryptoState } from '../CryptoContext';
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        display: 'flex',
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+    },
+    sidebar: {
+        width: '30%',
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+        },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 25,
+        borderRight: '2px solid grey',
+    },
+    heading: {
+        fontWeight: 'bold',
+        marginBottom: 20,
+        fontFamily: 'Montserrat',
+    },
+    description: {
+        width: '100%',
+        fontFamily: 'Montserrat',
+        padding: 25,
+        paddingBottom: 15,
+        paddingTop: 0,
+        textAlign: 'justify',
+    },
+    marketData: {
+        alignSelf: 'start',
+        padding: 25,
+        paddingTop: 10,
+        width: '100%',
+        [theme.breakpoints.down('md')]: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        [theme.breakpoints.down('xs')]: {
+            alignItems: 'start',
+        },
+    },
+}));
 
 const CoinPage = () => {
-    const { id } = useParams();
+    const classes = useStyles();
     const [coin, setCoin] = useState();
+    const { id } = useParams();
 
-    const { currency, symbol, user, watchlist, setAlert } = CryptoState();
+    const { currency, symbol, user, watchlist, setAlert } = useCryptoState();
 
     const fetchCoin = async () => {
         const { data } = await axios.get(SingleCoin(id));
@@ -70,57 +119,7 @@ const CoinPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const useStyles = makeStyles((theme) => ({
-        container: {
-            display: "flex",
-            [theme.breakpoints.down("md")]: {
-                flexDirection: "column",
-                alignItems: "center",
-            },
-        },
-        sidebar: {
-            width: "30%",
-            [theme.breakpoints.down("md")]: {
-                width: "100%",
-            },
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: 25,
-            borderRight: "2px solid grey",
-        },
-        heading: {
-            fontWeight: "bold",
-            marginBottom: 20,
-            fontFamily: "Montserrat",
-        },
-        description: {
-            width: "100%",
-            fontFamily: "Montserrat",
-            padding: 25,
-            paddingBottom: 15,
-            paddingTop: 0,
-            textAlign: "justify",
-        },
-        marketData: {
-            alignSelf: "start",
-            padding: 25,
-            paddingTop: 10,
-            width: "100%",
-            [theme.breakpoints.down("md")]: {
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-            },
-            [theme.breakpoints.down("xs")]: {
-                alignItems: "start",
-            },
-        },
-    }));
-
-    const classes = useStyles();
-
-    if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
+    if (!coin) return <LinearProgress style={{ backgroundColor: 'gold' }} />;
 
     return (
         <div className={classes.container}>
@@ -128,60 +127,60 @@ const CoinPage = () => {
                 <img
                     src={coin?.image.large}
                     alt={coin?.name}
-                    height="200"
+                    height='200'
                     style={{ marginBottom: 20 }}
                 />
-                <Typography variant="h3" className={classes.heading}>
+                <Typography variant='h3' className={classes.heading}>
                     {coin?.name}
                 </Typography>
-                <Typography variant="subtitle1" className={classes.description}>
-                    {ReactHtmlParser(coin?.description.en.split(". ")[0])}.
+                <Typography variant='subtitle1' className={classes.description}>
+                    {ReactHtmlParser(coin?.description.en.split('. ')[0])}.
                 </Typography>
                 <div className={classes.marketData}>
-                    <span style={{ display: "flex" }}>
-                        <Typography variant="h5" className={classes.heading}>
+                    <span style={{ display: 'flex' }}>
+                        <Typography variant='h5' className={classes.heading}>
                             Rank:
                         </Typography>
                         &nbsp; &nbsp;
                         <Typography
-                            variant="h5"
+                            variant='h5'
                             style={{
-                                fontFamily: "Montserrat",
+                                fontFamily: 'Montserrat',
                             }}
                         >
                             {numberWithCommas(coin?.market_cap_rank)}
                         </Typography>
                     </span>
 
-                    <span style={{ display: "flex" }}>
-                        <Typography variant="h5" className={classes.heading}>
+                    <span style={{ display: 'flex' }}>
+                        <Typography variant='h5' className={classes.heading}>
                             Current Price:
                         </Typography>
                         &nbsp; &nbsp;
                         <Typography
-                            variant="h5"
+                            variant='h5'
                             style={{
-                                fontFamily: "Montserrat",
+                                fontFamily: 'Montserrat',
                             }}
                         >
-                            {symbol}{" "}
+                            {symbol}{' '}
                             {numberWithCommas(
                                 coin?.market_data.current_price[currency.toLowerCase()]
                             )}
                         </Typography>
                     </span>
-                    <span style={{ display: "flex" }}>
-                        <Typography variant="h5" className={classes.heading}>
+                    <span style={{ display: 'flex' }}>
+                        <Typography variant='h5' className={classes.heading}>
                             Market Cap:
                         </Typography>
                         &nbsp; &nbsp;
                         <Typography
-                            variant="h5"
+                            variant='h5'
                             style={{
-                                fontFamily: "Montserrat",
+                                fontFamily: 'Montserrat',
                             }}
                         >
-                            {symbol}{" "}
+                            {symbol}{' '}
                             {numberWithCommas(
                                 coin?.market_data.market_cap[currency.toLowerCase()]
                                     .toString()

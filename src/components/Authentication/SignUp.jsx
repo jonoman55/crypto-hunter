@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { auth } from '../../firebase';
-import { CryptoState } from '../../CryptoContext';
+import { useCryptoState } from '../../CryptoContext';
 
 const SignUp = ({ handleClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const { setAlert } = CryptoState();
+    const { setAlert } = useCryptoState();
 
     const handleSubmit = async () => {
         if (password !== confirmPassword) {
@@ -20,7 +20,6 @@ const SignUp = ({ handleClose }) => {
             });
             return;
         }
-
         try {
             const result = await createUserWithEmailAndPassword(
                 auth,
@@ -82,6 +81,6 @@ const SignUp = ({ handleClose }) => {
             </Button>
         </Box>
     );
-}
+};
 
 export default SignUp;
