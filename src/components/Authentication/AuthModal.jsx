@@ -43,7 +43,7 @@ export default function AuthModal() {
 
     const googleProvider = new GoogleAuthProvider();
 
-    const signInWithGoogle = () => {
+    const signInWithGoogle = () => 
         signInWithPopup(auth, googleProvider)
             .then((res) => {
                 setAlert({
@@ -61,7 +61,6 @@ export default function AuthModal() {
                 });
                 return;
             });
-    };
 
     return (
         <div>

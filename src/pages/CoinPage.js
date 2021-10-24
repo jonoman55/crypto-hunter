@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { LinearProgress, makeStyles, Typography, Button } from '@material-ui/core';
+import { makeStyles, LinearProgress, Typography, Button } from '@material-ui/core';
 import ReactHtmlParser from 'react-html-parser';
 import CoinInfo from '../components/CoinInfo';
 import { SingleCoin } from '../config/api';
